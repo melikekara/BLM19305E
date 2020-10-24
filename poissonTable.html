@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Poisson Table</title>
+
+  <style>
+    body { max-width: 500px; }
+    #sample { overflow-x: auto; }
+    table { border-collapse: collapse; }
+    th { color: blue; padding: 5px 5px; }
+    td { 
+        border: 1px solid blue; 
+        padding: 5px 5px; 
+        text-align: center; 
+        position: relative;
+    }
+    td:hover .tip {
+        visibility: visible;
+    }
+    td .tip {
+        visibility: hidden;
+        font-size: small;
+        background-color: blue;
+        color: white;
+        text-align: center;
+        padding: 5px 5px;
+        position: absolute;
+        left: 5px; 
+        top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+<center>
+<h3 id=title>Advanced Programming Techniques HW#1</h3>
+
+<h2 id=title><b>Poisson Table</b></h2>
+
+<table id="tablo"></table>
+<pre id=out style="font-size:small"></pre>
+
+</center>
+
+<script>
+
+function makeRows() {
+
+    const L = [0.5, 1, 1.5, 2, 2.5, 3] //holds the value of λ.
+    const p = [] //Array define for result of e^-λ operation.
+    const conc = []//holds the conclusion value.
+
+    let row = "<th></th>";
+    for(let i=0; i<L.length; i++){
+        row += "<th>"+"λ = "+L[i]+"</th>";
+        p.push(Math.exp(-L[i])) //pushes the result of e^-λ operation to the array p.
+    }
+        
+    let text = "<tr>"+row+"</tr>";
+    
+    for (let x = 0; x < 9; x++) {
+
+       row = "<th>"+"x = "+x+"</th>";//fill columns.
+       
+       for (let i = 0; i < L.length; i++) {
+
+            conc[i] = (p[i] * Math.pow(L[i], x)/ factorial(x)).toFixed(4)//e^-λ*(λ^x/x!) Main operation.
+            row += "<td>"+conc[i]+"</td>";//fill the result to table.
+       }
+      
+       text += "<tr>"+row+"</tr>";
+    }
+    
+    let t = text.length+" chars";
+    console.log("makeRows: "+L.length +"x"+9+" "+t);
+    tablo.innerHTML = text; 
+    out.innerText = L.length +"x"+9+" "+t+"\n\nMelike Kara"; 
+}
+
+function factorial(num) {
+  if (num == 0) 
+      return 1;
+  else {
+      return (num * factorial(num - 1));
+  }
+}
+
+   
+makeRows();//calls the function.
+
+</script>
+
+</body>
+</html> 
