@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="icon" href="https://blm-fsmvu.github.io/305/images/icon192.png">
+    <title>Async </title>
+
+  <style> /* CSS comment */
+    body { max-width: 440px; }
+    #url { width: 190px; }
+    span, #url { color: blue; }
+  </style>
+</head>
+
+<body>   <!-- HTML comment: Modify all items marked xxx -->
+
+<h2 id=title title="Modify xxx"></h2>
+<p title="navigator.platform">
+  Platform: <span id=plat>??</span>
+</p>
+<p title="Battery level">
+  Battery level: <span id=level>??</span>
+</p>
+<p title="Latitude/Longitude">
+  Location: <span id=loc>??</span>
+</p>
+<p title="URL exists?">
+  URL <input type=url id=url value="https://melikekara.github.io/BLM19305E/cw5/Inspector.html"
+      onChange="check()"> <span id=resp>??</span>
+</p>
+<hr />
+<b>Sample code</b>
+<pre id=sample>This text is not shown. Why?</pre>
+
+<hr />
+
+<script>
+"use strict";
+// JavaScript comment
+function check() {
+  fetch('https://ipinfo.io/json').then(r=>{
+    if(r.ok == true){
+      resp.innerText="Ok"
+    }else{
+      resp.innerText="false"
+    }
+  })
+}
+function init() {
+  plat.innerText = navigator.platform
+ 
+  navigator.geolocation.getCurrentPosition(showPosition)
+
+  function showPosition(position) {
+  loc.innerHTML = position.coords.latitude.toFixed(4) +","+ position.coords.longitude.toFixed(4)
+}
+
+  navigator.getBattery().then(bat=>{
+    level.innerText = bat.level*100 +"%"
+  })
+}
+    title.innerText = document.title;
+    sample.innerText = init+'\n'+check;
+    init();
+</script>
+
+</body>
+</html>
