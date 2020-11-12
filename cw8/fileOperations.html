@@ -46,8 +46,10 @@ function checkFiles(b) {
             out.innerText += 'same'
         }
     }
+    out.innerText = a.length + " items checked, "
     if(flag == 0) out.innerText += 'Files are different'
     console.log(b.size, b.type)
+    console.log(iFileSize)
 }
 const L = console.log
 docName.innerText = document.title
