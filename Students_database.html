@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Student Database </title>
+
+  <style>
+    body { max-width: 440px; }
+    .link {
+        color: blue;
+        cursor: pointer;
+        font-style: italic;
+    }
+    .liste {
+        visibility: hidden;
+        font: 11px arial, sans-serif;
+        color: white;
+        background: blue;
+        cursor: text;
+        padding: 6px;
+        position: absolute;
+        height: 116px;
+        overflow-y: auto;
+    }
+    .link:hover .liste { 
+        visibility: visible; 
+    }
+  </style>
+</head>
+
+<body>
+
+<h2 id=title></h2>
+
+<button onClick='randomStd()'>Random</button>
+<button onClick='findBest()'>Best GPA</button>
+<button onClick='examSchedule(std_id.value)'>Exam schedule</button>
+<button onClick='studentList(crs_id.value)'>Student List</button>
+<button onClick='courseList(exam_room.value)'>Course List</button>
+<button onClick='totalCourse(exam_room.value)'>Total Course</button>
+<button onClick='findExam(date.value)'>Find Exam</button>
+<button onClick='search()'>Search for random</button>
+<button onClick='out.innerText=""'>Clear</button>
+
+<p>Student id: 
+<input id=std_id type=number onChange="showStudent(value)" value="116690190">
+</p>
+<p>Course id: 
+<input id=crs_id type=text onChange="showCourse(value)" value="math 206">
+</p>
+<p>Exam Room: 
+    <input id=exam_room type=text value="bz014">
+</p>
+<p>Exam Date: 
+    <input id=date type=text value="11.01.2017">
+</p>
+<p id=out onClick='doClick(event)'>Result:</p>
+
+<hr />
+<b>Sample code</b>
+<pre id=sample></pre>
+<hr />
+
+<script>
+"use strict";
+class Student {
+    constructor(id, name, gpa, ...list) {
+        if (!id) throw "Undefined Student id"
+        this.id = id; this.name = name;
+        this.gpa = gpa.padEnd(4,'0'); 
+        this.list = list
+    }
+    toString() {
+        return this.id+' '+this.name+' '+this.gpa
+    }
+    static fromString(s) {
+        return new Student(...s.split('\t'))
+    }
+}
+class Course { 
+    constructor(id, time, date, ...list) {
+        if (!id) throw "Undefined Course id"
+        this.id = id; this.time = time; this.date = date;
+        this.list = list
+    }
+    toString() {
+        return this.id+' '+ this.time +' '+this.date
+    }
+    static fromString(s) {
+        return new Course(...s.split('\t'))
+    }
+}
+
+function report(msg, id, list) {
+    msg += " "; let txt = "<br>\n"+msg;
+    if (id) {
+        msg += id; txt += "<span class=link>"+id
+        if (list)  txt += "<span class=liste>"
+                    +list.join("<br>")+"</span>"
+        txt += "</span>"
+    }
+    console.log(msg); out.innerHTML += txt; 
+}
+const stdMap = new Map(), crsMap = new Map(); //global
+function makeData(txt, Maker, map) {
+    map.clear()
+    for (let line of txt.split('\n')) {
+        if (!line) continue
+        let std = Maker.fromString(line)
+        map.set(std.id, std)
+    }
+    return map;
+}
+function doClick(evt) {
+    let s = evt.target.innerText;
+    //if s contains only digits
+    if (/^\d+$/.test(s)) showStudent(s); 
+}
+function showStudent(id) {
+    let std = stdMap.get(id);
+    if (!std) return report(id+" not found");
+    let t = std.toString()
+    report(t, "("+std.list.length+" courses)", std.list);
+    return std
+}
+function showCourse(id) {
+    id = id.toUpperCase();
+    let crs = crsMap.get(id);
+    let t = crs.toString()
+    let a = [];
+    for (let std of stdMap.values()) 
+        if (std.list.includes(id)) 
+            a.push(std.id+" "+std.name);
+    if (a.length > 0)
+        report(t + " : ", a.length+" students", a);
+    else report("No students in "+id);
+    return a
+}
+function examSchedule(id){
+    let std = stdMap.get(id);
+    let std_crs = []
+    for(let crs of std.list){
+        report(crsMap.get(crs))
+    } 
+}
+function studentList(id){
+    id = id.toUpperCase();
+    for(let std of stdMap.values()){
+        for(let stdCourse of std.list){
+            if(stdCourse == id) report(std.id+" "+std.name)
+        }
+    }
+}
+function courseList(examRoom){
+    examRoom = examRoom.toUpperCase();
+    for(let crs of crsMap.values()){
+        for(let exam of crs.list){
+            if(exam == examRoom) {
+                report(crs.id)
+            }
+        }
+    }
+}
+function totalCourse(examRoom){
+    let count = 0
+    examRoom = examRoom.toUpperCase();
+    for(let crs of crsMap.values()){
+        for(let exam of crs.list){
+            if(exam == examRoom) {
+                count++
+            }
+        }
+    }
+    report("Total number of courses in a "+examRoom +" room: "+count)
+}
+function findExam(date){//find exam on the given date
+    let flag=0
+    for(let crs of crsMap.values()){
+        if(crs.date == date){
+            report(crs.id+" course exam in "+crs.list+" room/rooms.")
+            flag=1
+        }
+    }
+    if(flag==0)report("No exam on "+date)
+}
+function randomStd() {
+    let keys = [...stdMap.keys()]  //Iterable
+    console.assert(keys.length == stdMap.size)
+    let i = Math.trunc(keys.length * Math.random());
+    let b = stdMap.get(keys[i]);
+    report("Random: ", b.id);
+    return b
+}
+function search(){
+    let keys = [...stdMap.keys()]
+    let count1=0
+    let count2=0
+    let r = 116712215;//selected randomly
+    let temp = r
+    var t0 = performance.now()
+    for(let i=0; i<10000; i++){
+        r++;
+        if(keys.includes(r.toString())){
+            count1++
+        }
+    }
+    var t1 = performance.now()
+    var n0 = performance.now()
+    for(let i=0; i<10000; i++){
+        temp++
+        if(stdMap.has(temp.toString())){
+            count2++
+        }
+    }
+    var n1 = performance.now()
+    if(count1==count2)report("Total number found: "+count1)
+    report("Timig result in keys search: "+ (t1-t0).toFixed(4) +" msec")
+    report("Timig result in stdMap search: "+ (n1-n0).toFixed(4) +" msec")
+}
+function findBest() { //the best gpa in stdMap
+    var a = []
+    var max = 0;
+    for(let s of stdMap.values()){
+        if(s.gpa > max) max = s.gpa
+    }
+
+    report(max);
+}
+const LINK = "https://maeyler.github.io/JS/data/"
+function readStudents() {
+    fetch(LINK+"Students.txt").then(r => r.text())
+    .then(t => makeData(t, Student, stdMap))
+}
+
+function readCourses() {
+    fetch(LINK+"Courses.txt").then(r => r.text())
+    .then(id => makeData(id, Course, crsMap))
+}
+
+title.innerText = document.title
+sample.innerText = examSchedule+"\n"+studentList+"\n"+courseList+"\n"+totalCourse+"\n"+findExam+"\n"+search
+readStudents(); readCourses();
+</script>
+</body>
+</html>
