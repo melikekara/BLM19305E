@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+
+  <style> /* CSS comment */
+    body { max-width: 440px; }
+    #url { width: 190px; }
+    span, #url { color: blue; }
+  </style>
+</head>
+
+<body>   <!-- HTML comment: Modify all items marked xxx -->
+
+<h2>Battery Status</h2>
+<span id=level></span>
+<h2>Online Status</h2>
+<span id=online></span>
+<h2>Keyboard</h2>
+<p id=comment>//Press 'p' key to change background to pink</p>
+<p id=keyboard  style="color:rgb(5, 5, 5)"></p>
+<b>Sample code</b>
+<pre id=sample>This text is not shown. Why?</pre>
+<hr />
+
+<script>
+"use strict";
+// JavaScript comment
+
+function init() {
+    navigator.getBattery().then(b =>{
+      if(b.charging==true)level.innerText+="Charging...\n"
+      if(b.charging==false)level.innerText+="Discharging...\n"
+      level.innerText+= b.onlevelchange+"\n"
+      level.innerText += 100*b.level+'%\n'
+      level.innerText+= b.onchargingchange
+    })
+    
+    if(navigator.onLine==true)online.innerText="Connected --online"
+    if(navigator.onLine==false)online.innerText="Disconnected --offline"
+    
+    ononline=()=>{
+      document.body.style.background='green'
+    }
+
+    onoffline=()=>{
+      document.body.style.background='violet'
+    }
+    
+    onkeydown= event =>{
+      if(event.key=='p')document.body.style.background='pink'
+      keyboard.style.fontSize="x-large"
+      keyboard.innerText=event.key+"\n"
+      comment.disabled=true
+    }
+    
+    onkeyup= event =>{
+      if(event.key=='p')document.body.style.background=''
+      keyboard.style.fontSize="x-large"
+      keyboard.innerText=event.key+"\n"
+      comment.disabled=true
+    }
+
+}
+  
+    sample.innerText = init;
+    init();
+
+</script>
+
+</body>
+</html>
