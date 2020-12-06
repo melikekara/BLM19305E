@@ -7,7 +7,7 @@
   "theme-color": "pink",
   "icons": [
     {
-      "src": "BLM19305E/icon192.png",
+      "src": "/BLM19305E/icon192.png",
       "sizes": "192x192",
       "type": "image/png"
     }
