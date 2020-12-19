@@ -1,1 +1,148 @@
-Advanced Programming Project
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width">
+  <link rel="icon" href="https://yt3.ggpht.com/FAUHUl0lBjmmvAmr8q2L0IbqAYVgQio-_HAyuwzbYNMM8mI_Jz9yw02AADcb9wNhbEtjL2wHgg=s900-c-k-c0x00ffffff-no-rj">
+  <title>MyMusic</title>
+  <style>
+    .button {
+        background-color: #4CAF50;/* green*/
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+    }  
+    .button2 {background-color: #008CBA;} /* Blue */
+    .button3 {background-color: #f44336;} /* Red */ 
+    .button4 {background-color: #c4d109;} /* yellow*/ 
+    .button5 {background-color: #555555;} /* Black */
+    .button6 {background-color: #a01388;} /* purple*/
+    body {
+        max-width: 500px;
+        margin: 0 auto;
+        background-image: url('https://cdn.wallpaperhi.com/3200x2400/20130530/blank%20sheet%20music%20somebody%20made%20this%20for%20me%20and%20was_www.wallpaperhi.com_67.jpg');
+    }
+    div {
+        background-color: rgb(0, 0, 0);
+    }
+    .p1{text-align: center;}
+    table, th, td {
+        font-size: 20px;
+        background-color:blanchedalmond;
+    }
+    th, td {
+        padding: 5px;
+    }
+    th {
+        text-align: left;
+    }
+   
+  </style>
+</head>
+
+<body>
+    <br>
+    <div>
+        <p class="p1" style="color:rgb(255, 255, 255);font-size:50px">MyMusic</p>
+    </div>
+    <hr>
+    <br>
+    <p style="font-size:23px">Choose the type of music you like!</p>
+    <button class="button" onClick="goster()">Pop</button>
+    <button class="button button2">Hip Hop</button>
+    <button class="button button3">R&B and Soul</button>
+    <button class="button button4">Blues</button>
+    <button class="button button5">Jazz</button>
+    <button class="button button6">Classical</button>
+    <br><br>
+    <table id="myTable" width="100%" style="display: none;"></table>
+</body>   
+<audio id="audio" src="Sia-Chandelier-instrumentalfx.mp3"></audio>
+<script>
+    function goster(){
+        document.getElementById("myTable").style.display = 'block';
+    }
+    function myFunction() {
+        var table = document.getElementById("myTable");
+        var row = table.insertRow(0);
+        var ply= row.insertCell(0);
+        var cell1 = row.insertCell(1);
+        var cell2 = row.insertCell(2);
+        var row1 = table.insertRow(1);
+        var ply1= row1.insertCell(0);
+        var cell3 = row1.insertCell(1)
+        var cell4 = row1.insertCell(2);
+        var row2 = table.insertRow(2);
+        var ply2= row2.insertCell(0);
+        var cell5 = row2.insertCell(1)
+        var cell6 = row2.insertCell(2);
+        var row3 = table.insertRow(3);
+        var ply3= row3.insertCell(0);
+        var cell7 = row3.insertCell(1)
+        var cell8 = row3.insertCell(2);
+        var row4 = table.insertRow(4);
+        var ply4= row4.insertCell(0);
+        var cell9 = row4.insertCell(1)
+        var cell10 = row4.insertCell(2);
+        ply.innerHTML=""
+        ply1.innerHTML = "<img src=\"https://icons-for-free.com/iconfiles/png/512/play+icon-1320184953284378621.png\" width=\"40px\" height=\"40px\">";
+        ply2.innerHTML = "<img src=\"https://icons-for-free.com/iconfiles/png/512/play+icon-1320184953284378621.png\" width=\"40px\" height=\"40px\">";
+        ply3.innerHTML = "<img src=\"https://icons-for-free.com/iconfiles/png/512/play+icon-1320184953284378621.png\" width=\"40px\" height=\"40px\">";
+        ply4.innerHTML = "<img src=\"https://icons-for-free.com/iconfiles/png/512/play+icon-1320184953284378621.png\" width=\"40px\" height=\"40px\">";
+        cell1.innerHTML = "Title"
+        cell2.innerHTML = "Artist"
+        cell3.innerHTML = "Chandelier";
+        cell4.innerHTML = "Sia"
+        cell5.innerHTML = "Shallow";
+        cell6.innerHTML = "Lady Gaga & Breadly Cooper"
+        cell7.innerHTML = "Someone You Loved";
+        cell8.innerHTML = "Lewis Capaldi"
+        cell9.innerHTML = "When We Were Young";
+        cell10.innerHTML = "Adele"
+
+        let size = 0;
+        ply1.addEventListener("click", function() {
+        if (size % 2 == 0) {
+            document.getElementById("audio").play();
+            ply1.innerHTML = "<img src=\"https://www.flaticon.com/svg/static/icons/svg/61/61039.svg\" width=\"40px\" height=\"40px\">";
+        } else {
+            ply1.innerHTML = "<img src=\"https://icons-for-free.com/iconfiles/png/512/play+icon-1320184953284378621.png\" width=\"40px\" height=\"40px\">";
+            document.getElementById("audio").pause();
+        }
+        size++;
+        });
+
+       
+    }
+
+    
+    myFunction()
+    /*
+    var cell =[];
+        var row = [];
+        let k = 0;
+        for(let i=0; i<5; i++){
+            row[i] = table.insertRow(i);
+            cell[k] = row[i].insertCell(0);
+            ++k;
+            cell[k]= row[i].insertCell(1);
+        }
+        cell[0].innerHTML = "Title"
+        cell[1].innerHTML = "Artist"
+        cell[2].innerHTML = "Chandelier";
+        cell[3].innerHTML = "Sia"
+        cell[4].innerHTML = "Shallow";
+        cell[5].innerHTML = "Lady Gaga & Breadly Cooper"
+        cell[6].innerHTML = "Someone You Loved";
+        cell[7].innerHTML = "Lewis Capaldi"
+        cell[8].innerHTML = "When We Were Young";
+        cell[9].innerHTML = "Adele"
+        */
+</script> 
+</html>
+
