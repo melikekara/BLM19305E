@@ -7,7 +7,7 @@
   "theme-color": "pink",
   "icons": [
     {
-      "src": "iconms.png",
+      "src": "https://image.shutterstock.com/image-vector/globe-go-web-flat-icon-260nw-1482921317.jpg",
       "sizes": "192x192",
       "type": "image/png"
     }
